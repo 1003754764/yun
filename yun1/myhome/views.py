@@ -1,26 +1,90 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 # Create your views here.
-from myadmin.models import Users
+from myadmin.models import Users,Types,Goods
 from django.contrib.auth.hashers import make_password, check_password
 
 
 # 首页
 def index(request):
+    '''
+        [
+            {
+            'name':'点心/蛋糕',
+            'sub':[
+                    {'name':'点心',
+                        'goodssub':[
+                            {goods objects},
+                            {goods objects},
+                            {goods objects}
+                        ]
+                    },
+                    
+                    {'name':'蛋糕',
+                        'goodssub':[
+                            {goods objects},
+                            {goods objects},
+                            {goods objects}
+                        ]
+                    }
+                ]
+            },
+            
+            {
+            'name':'饼干/膨化',
+            'sub':[
+                    {'name':'饼干','goodssub':[{goods objects},{goods objects},{goods objects}]},
+                    {'name':'膨化','goodssub':[{goods objects},{goods objects},{goods objects}]}
+                ]
+            },
+        ]
+    '''
+    # 获取所有的顶级分类
+    date = Types.objects.filter(pid=0)
 
+    # 定义二级分类
+
+    erdate = []
+
+    for i in date:
+    	# 获取当前顶级分类下的子类
+    	i.sub = Types.objects.filter(pid=i.id)
+
+    	for j in i.sub:
+    		# 获取子类下的商品
+    		j.goodssub = Goods.objects.filter(typeid=j.id)
+
+    		erdate.append(j)
+
+    obj = {'tglist':date,'erdate':erdate}
+
+    return render(request,'myhome/index.html',obj)
+	
 	# return HttpResponse('首页')
-	return render(request,"myhome/index.html")
 
 
 # 列表页
-def list(request):
+def list(request,tid):
 
-	return render(request,"myhome/list.html")
+	# 根据分类id获取商品
+
+	date = Goods.objects.filter(typeid=tid)
+
+	context = {'glist':date}
+	return render(request,"myhome/list.html",context)
 
 # 详情页
-def info(request):
+def info(request,sid):
+	try:
+		# 根据商品id获取商品信息
+		date = Goods.objects.filter(id=sid)
 
-	return render(request,"myhome/info.html")
+		context = {'ginfo':date}
+		return render(request,"myhome/info.html",context)
+
+	except:
+
+		pass
 
 # 登录
 def login(request):
@@ -107,6 +171,26 @@ def register(request):
 
 		return HttpResponse('<script>alert("注册失败");history.back(-1)</script>')
 
+
+# 搜索
+
+def search(request):
+
+	# 获取搜索参数值
+
+	keywords = request.GET.get('keywords',None)
+
+	if not keywords:
+
+		# 如果搜索参数为空,则返回上一步
+
+		return HttpResponse('<script>history.back(-1)</script>')
+
+	date = Goods.objects.filter(title__contains=keywords)
+
+	context = {'glist':date}
+
+	return render(request,'myhome/search.html',context)
 
 
 

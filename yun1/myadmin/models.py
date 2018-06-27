@@ -19,6 +19,8 @@ class Types(models.Model):
 
     name = models.CharField(max_length=20)
 
+    pics = models.CharField(max_length=100,null=True)
+
     pid = models.IntegerField()
 
     path = models.CharField(max_length=50)

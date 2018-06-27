@@ -21,6 +21,7 @@
 
 
 {% block con %}
+<link href="/static/myadmin/css/bootstrap-fileinput.css" rel="stylesheet">
 <div class="row">
     <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
         <div class="widget am-cf">
@@ -38,6 +39,32 @@
                         </div>
                     </div>
 
+                    <div class="am-form-group">
+                        <label for="user-weibo" class="am-u-sm-3 am-form-label">分类图片 </label>
+                        
+                        <div class="am-u-sm-9 fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                            <div class="tpl-form-file-img fileinput-new thumbnail" >
+                                <img id='picImg' src="{{ uinfo.pics }}" width="100">
+                            </div>
+                            <br>
+                          <!--   <div class="am-form-group am-form-file">
+                                <button type="button" class="am-btn am-btn-danger am-btn-sm">
+                                <i class="am-icon-cloud-upload"></i> 添加头像</button>
+                                <input id="doc-form-file" type="file" name="pic" id="picID" accept="image/gif,image/jpeg,image/x-png">
+                            </div> -->
+                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;">
+                                
+                            </div>
+                            <div>
+                                <span class="btn btn-primary btn-file">
+                                   <span class="fileinput-new am-btn am-btn-danger am-btn-sm">选择分类图片</span>
+                                   <span class="fileinput-exists am-btn am-btn-danger am-btn-sm">换一张</span>
+                                   <input type="file" name="pic" id="picID" accept="image/gif,image/jpeg,image/x-png"/>
+                                </span>
+                                <a href="javascript:;" class=" fileinput-exists am-btn am-btn-danger am-btn-sm" data-dismiss="fileinput" style="margin-top: 5px">移除</a>
+                            </div>
+                       </div>
+                   </div>                   
 
                     <div class="am-form-group">
                         <div class="am-u-sm-9 am-u-sm-push-3">
@@ -49,4 +76,5 @@
         </div>
     </div>
 </div>
+<script src="/static/myadmin/js/bootstrap-fileinput.js"></script>
 {% endblock%}

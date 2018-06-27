@@ -50,7 +50,8 @@
                                 <select name="type" data-am-selected="{btnSize: 'sm'}" style="display: none;">
                                   <option value="all" {% if request.GET.type == 'all' %} selected {% endif %}>所有条件</option>
                                   <option value="id" {% if request.GET.type == 'id' %} selected {% endif %}>ID</option>
-                                  <option value="name" {% if request.GET.type == 'name' %} selected {% endif %}>商品分类名</option>
+                                  <option value="name" {% if request.GET.type == 'name' %} selected {% endif %}>分类名</option>
+                                <!--   <option value="pname" {% if request.GET.type == 'pname' %} selected {% endif %}>所属分类</option>    -->                              
                                 </select>
                             </div>
                         </div>
@@ -68,6 +69,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
+                                    <th>分类缩略图</th>
                                     <th>分类名</th>
                                     <th>所属分类</th>
                                     <th>分类创建时间</th>
@@ -79,6 +81,9 @@
                             {% for v in tlist %}
                                 <tr>
                                     <td class="am-text-middle">{{ v.id }}</td>
+                                    <td>
+                                        <img src="{{ v.pics }}" class="tpl-table-line-img" alt="">
+                                    </td>                                    
                                     <td class="am-text-middle">{{ v.name }}</td>
                                     <td class="am-text-middle">{{ v.pname }}</td>
                                     <td class="am-text-middle">{{ v.addtime|date:"Y-m-d H:i:s" }}</td>

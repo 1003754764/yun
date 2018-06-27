@@ -29,7 +29,7 @@
                     <div class="am-tabs" id="doc-my-tabs">
                         <ul class="am-tabs-nav am-nav am-nav-tabs am-nav-justify">
                             <li class="am-active">
-                                <a href="">邮箱注册</a></li>
+                                <a href="">用户名注册</a></li>
                             <li>
                                 <a href="">手机号注册</a></li>
                         </ul>
@@ -42,7 +42,7 @@
 
                                     <div class="user-email">
                                         <label for="username">
-                                            <i class="am-icon-envelope-o"></i>
+                                            <i class="am-icon-user"></i>
                                         </label>
                                         <input type="username" name="username" required id="username" placeholder="请输入用户名">
                                     </div>
@@ -60,11 +60,11 @@
                                         <input type="password" name="password" required id="password" placeholder="设置密码">
                                     </div>
                                     <div class="user-email">
-                                        <label for="code">
-                                            <i class="am-icon-envelope-o"></i>
-                                        </label>
                                         <div style="position: relative;">
-                                            <input type="text" name="vcode" required  placeholder="请输入验证码">
+                                            <label for="code">
+                                                <i class="am-icon-code-fork"></i>
+                                            </label>
+                                            <input type="text" name="vcode" required placeholder="请输入验证码">
                                             <img src="{% url 'myhome_vcode' %}" onclick="this.src='/vcode?'+Math.random()" style="position: absolute;top:10px;right:10px">
                                         </div>
                                     </div>
@@ -120,7 +120,7 @@
             <div class="footer ">
                 <div class="footer-hd ">
                     <p>
-                        <a href="# ">恒望科技</a>
+                        <a href="# ">云霄科技</a>
                         <b>|</b>
                         <a href="# ">商城首页</a>
                         <b>|</b>
@@ -130,11 +130,11 @@
                 </div>
                 <div class="footer-bd ">
                     <p>
-                        <a href="# ">关于恒望</a>
+                        <a href="# ">关于云霄</a>
                         <a href="# ">合作伙伴</a>
                         <a href="# ">联系我们</a>
                         <a href="# ">网站地图</a>
-                        <em>© 2015-2025 Hengwang.com 版权所有</em></p>
+                        <em>© 2015-2025 yunxiao.com 版权所有</em></p>
                 </div>
             </div>
     </body>

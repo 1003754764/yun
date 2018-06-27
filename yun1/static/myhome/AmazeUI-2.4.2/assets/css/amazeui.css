@@ -702,7 +702,7 @@ select {
   position: relative;
 }
 [class*="am-u-"] + [class*="am-u-"]:last-child {
-  float: right;
+  /*float: right;*/
 }
 [class*="am-u-"] + [class*="am-u-"].am-u-end {
   float: left;

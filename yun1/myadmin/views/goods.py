@@ -121,6 +121,11 @@ def list(request):
 		elif types=='addtime':
 
 			goodslist = Goods.objects.filter(addtime__contains=keywords)
+		# 根据商品所属分类查询
+		elif types=='typeid':
+
+			goodslist = Goods.objects.filter(typeid__name__contains=keywords)
+
 	else:
 		# 获取所有的商品信息
 		goodslist = Goods.objects.filter()

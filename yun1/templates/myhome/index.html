@@ -58,42 +58,26 @@
                 
                 <div class="category">
                     <ul class="category-list" id="js_climit_li">
+                    {% for i in tglist %}
                         <li class="appliance js_toggle relative first">
                             <div class="category-info">
-                                <h3 class="category-name b-category-name"><i><img src="/static/myhome/images/cake.png"></i><a class="ml-22" title="点心">点心/蛋糕</a></h3>
+                                <h3 class="category-name b-category-name"><i><img src="{{ i.pics }}"></i><a class="ml-22">{{ i.name }}</a></h3>
                                 <em>&gt;</em></div>
                             <div class="menu-item menu-in top">
                                 <div class="area-in">
                                     <div class="area-bg">
                                         <div class="menu-srot">
                                             <div class="sort-side">
+                                            {% for j in i.sub %}
                                                 <dl class="dl-sort">
-                                                    <dt><span title="蛋糕">蛋糕</span></dt>
-                                                    <dd><a title="蒸蛋糕" href="#"><span>蒸蛋糕</span></a></dd>
-                                                    <dd><a title="脱水蛋糕" href="#"><span>脱水蛋糕</span></a></dd>
-                                                    <dd><a title="瑞士卷" href="#"><span>瑞士卷</span></a></dd>
-                                                    <dd><a title="软面包" href="#"><span>软面包</span></a></dd>
-                                                    <dd><a title="马卡龙" href="#"><span>马卡龙</span></a></dd>
-                                                    <dd><a title="千层饼" href="#"><span>千层饼</span></a></dd>
-                                                    <dd><a title="甜甜圈" href="#"><span>甜甜圈</span></a></dd>
-                                                    <dd><a title="蒸三明治" href="#"><span>蒸三明治</span></a></dd>
-                                                    <dd><a title="铜锣烧" href="#"><span>铜锣烧</span></a></dd>
+                                                    <dt><a href="{% url 'myhome_list' j.id %}"><span>{{ j.name }}</span></a></dt>
+                                                    {% for k in j.goodssub %}
+                                                    <dd><a  href="{% url 'myhome_info' k.id %}"><span>{{ k.title }}</span></a></dd>
+                                                    {% endfor %}
                                                 </dl>
-                                                <dl class="dl-sort">
-                                                    <dt><span title="蛋糕">点心</span></dt>
-                                                    <dd><a title="蒸蛋糕" href="#"><span>蒸蛋糕</span></a></dd>
-                                                    <dd><a title="脱水蛋糕" href="#"><span>脱水蛋糕</span></a></dd>
-                                                    <dd><a title="瑞士卷" href="#"><span>瑞士卷</span></a></dd>
-                                                    <dd><a title="软面包" href="#"><span>软面包</span></a></dd>
-                                                    <dd><a title="马卡龙" href="#"><span>马卡龙</span></a></dd>
-                                                    <dd><a title="千层饼" href="#"><span>千层饼</span></a></dd>
-                                                    <dd><a title="甜甜圈" href="#"><span>甜甜圈</span></a></dd>
-                                                    <dd><a title="蒸三明治" href="#"><span>蒸三明治</span></a></dd>
-                                                    <dd><a title="铜锣烧" href="#"><span>铜锣烧</span></a></dd>
-                                                </dl>
-
+                                            {% endfor %}
                                             </div>
-                                            <div class="brand-side">
+<!--                                             <div class="brand-side">
                                                 <dl class="dl-sort"><dt><span>实力商家</span></dt>
                                                     <dd><a rel="nofollow" title="呵官方旗舰店" target="_blank" href="#" rel="nofollow"><span  class="red" >呵官方旗舰店</span></a></dd>
                                                     <dd><a rel="nofollow" title="格瑞旗舰店" target="_blank" href="#" rel="nofollow"><span >格瑞旗舰店</span></a></dd>
@@ -102,14 +86,15 @@
                                                     <dd><a rel="nofollow" title="本真旗舰店" target="_blank" href="#" rel="nofollow"><span  class="red" >本真旗舰店</span></a></dd>
                                                     <dd><a rel="nofollow" title="杭派女装批发网" target="_blank" href="#" rel="nofollow"><span  class="red" >杭派女装批发网</span></a></dd>
                                                 </dl>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         <b class="arrow"></b>   
                         </li>
-                        <li class="appliance js_toggle relative">
+                    {% endfor %}
+<!--                         <li class="appliance js_toggle relative">
                             <div class="category-info">
                                 <h3 class="category-name b-category-name"><i><img src="/static/myhome/images/cookies.png"></i><a class="ml-22" title="饼干、膨化">饼干/膨化</a></h3>
                                 <em>&gt;</em></div>
@@ -580,7 +565,7 @@
                                 </div>
                             </div>
 
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </div>
@@ -594,139 +579,45 @@
     <div class="shopMainbg">
 
         <div class="shopMain" id="shopmain">
+            {% for i in erdate %}
             <div class="clear "></div>
-            <div id="f1">
+            <div id="f{{forloop.counter}}">
             <!--甜点-->
-            <div class="am-container ">
-                <div class="shopTitle ">
-                    <h4>甜品</h4>
-                    <h3>每一道甜品都有一个故事</h3>
-                    <div class="today-brands ">
-                        <a href="# ">桂花糕</a>
-                        <a href="# ">奶皮酥</a>
-                        <a href="# ">栗子糕 </a>
-                        <a href="# ">马卡龙</a>
-                        <a href="# ">铜锣烧</a>
-                        <a href="# ">豌豆黄</a>
+                <div class="am-container ">
+                    <div class="shopTitle ">
+                        <h4>{{ i.name }}</h4>
+                        <span class="more ">
+                        <a href="{% url 'myhome_list' i.id %}">更多美味<i class="am-icon-angle-right" style="padding-left:10px ;" ></i></a>
+                        </span>
                     </div>
-                    <span class="more ">
-            <a href="# ">更多美味<i class="am-icon-angle-right" style="padding-left:10px ;" ></i></a>
-                </span>
                 </div>
-            </div>
             
-            <div class="am-g am-g-fixed floodFour">
-                <div class="am-u-sm-5 am-u-md-4 text-one list ">
-                    <div class="word">
-                        <a class="outer" href="#"><span class="inner"><b class="text">核桃</b></span></a>
-                        <a class="outer" href="#"><span class="inner"><b class="text">核桃</b></span></a>
-                        <a class="outer" href="#"><span class="inner"><b class="text">核桃</b></span></a> 
-                        <a class="outer" href="#"><span class="inner"><b class="text">核桃</b></span></a>
-                        <a class="outer" href="#"><span class="inner"><b class="text">核桃</b></span></a>
-                        <a class="outer" href="#"><span class="inner"><b class="text">核桃</b></span></a>                                 
-                    </div>
-                    <a href="# ">
+                <div class="am-g am-g-fixed floodFour">
+                    {% for j in i.goodssub %}                    
+                    <div class="am-u-sm-3 am-u-md-2 text-two">
                         <div class="outer-con ">
                             <div class="title ">
-                            开抢啦！
+                                {{ j.title }}
                             </div>
                             <div class="sub-title ">
-                                零食大礼包
-                            </div>                                  
-                        </div>
-                          <img src="/static/myhome/images/act1.png " />                             
-                    </a>
-                    <div class="triangle-topright"></div>                       
-                </div>
-                
-                    <div class="am-u-sm-7 am-u-md-4 text-two sug">
-                        <div class="outer-con ">
-                            <div class="title ">
-                                雪之恋和风大福
-                            </div>                                  
-                            <div class="sub-title ">
-                                ¥13.8
+                                ¥{{ j.price }}
                             </div>
                             <i class="am-icon-shopping-basket am-icon-md  seprate"></i>
                         </div>
-                        <a href="# "><img src="/static/myhome/images/2.jpg" /></a>
+                        <a href="{% url 'myhome_info' j.id %}"><img style="width: 180px;height: 180px" src="{{ j.pics }}" /></a>
                     </div>
-
-                    <div class="am-u-sm-7 am-u-md-4 text-two">
-                        <div class="outer-con ">
-                            <div class="title ">
-                                雪之恋和风大福
-                            </div>
-                            <div class="sub-title ">
-                                ¥13.8
-                            </div>
-                            <i class="am-icon-shopping-basket am-icon-md  seprate"></i>
-                        </div>
-                        <a href="# "><img src="/static/myhome/images/1.jpg" /></a>
-                    </div>
-
-
-                <div class="am-u-sm-3 am-u-md-2 text-three big">
-                    <div class="outer-con ">
-                        <div class="title ">
-                            小优布丁
-                        </div>
-                        <div class="sub-title ">
-                            ¥4.8
-                        </div>
-                        <i class="am-icon-shopping-basket am-icon-md  seprate"></i>
-                    </div>
-                    <a href="# "><img src="/static/myhome/images/5.jpg" /></a>
+                    {% endfor %}
                 </div>
-
-                <div class="am-u-sm-3 am-u-md-2 text-three sug">
-                    <div class="outer-con ">
-                        <div class="title ">
-                            小优布丁
-                        </div>
-                        <div class="sub-title ">
-                            ¥4.8
-                        </div>
-                        <i class="am-icon-shopping-basket am-icon-md  seprate"></i>
-                    </div>
-                    <a href="# "><img src="/static/myhome/images/3.jpg" /></a>
-                </div>
-
-                <div class="am-u-sm-3 am-u-md-2 text-three ">
-                    <div class="outer-con ">
-                        <div class="title ">
-                            小优布丁
-                        </div>
-                        <div class="sub-title ">
-                            ¥4.8
-                        </div>
-                        <i class="am-icon-shopping-basket am-icon-md  seprate"></i>
-                    </div>
-                    <a href="# "><img src="/static/myhome/images/4.jpg" /></a>
-                </div>
-
-                <div class="am-u-sm-3 am-u-md-2 text-three last big ">
-                    <div class="outer-con ">
-                        <div class="title ">
-                            小优布丁
-                        </div>
-                        <div class="sub-title ">
-                            ¥4.8
-                        </div>
-                        <i class="am-icon-shopping-basket am-icon-md  seprate"></i>
-                    </div>
-                    <a href="# "><img src="/static/myhome/images/5.jpg" /></a>
-                </div>
-
+<!--                 <div class="clear "></div>   -->
             </div>
-            <div class="clear "></div>  
+            {% endfor %}
         </div>
-        
-         
+            
+            
         <div class="footer ">
             <div class="footer-hd ">
                 <p>
-                    <a href="# ">恒望科技</a>
+                    <a href="# ">云霄科技</a>
                     <b>|</b>
                     <a href="# ">商城首页</a>
                     <b>|</b>
@@ -737,11 +628,11 @@
             </div>
             <div class="footer-bd ">
                 <p>
-                    <a href="# ">关于恒望</a>
+                    <a href="# ">关于云霄</a>
                     <a href="# ">合作伙伴</a>
                     <a href="# ">联系我们</a>
                     <a href="# ">网站地图</a>
-                    <em>© 2015-2025 Hengwang.com 版权所有</em>
+                    <em>© 2015-2025 yunxiao.com 版权所有</em>
                 </p>
             </div>
         </div>

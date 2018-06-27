@@ -1,8 +1,9 @@
 from django.shortcuts import render,reverse
 from django.http import HttpResponse,JsonResponse
-from .. models import Types
+from .. models import Types,Goods
 from django.core.paginator import Paginator
 from django.db.models import Q
+from .user import uploads
 # Create your views here.
 
 # 获取所有的分类信息
@@ -56,6 +57,15 @@ def add(request):
 
 			tlist.path = t.path+tlist.pid+','
 
+		if request.FILES.get('pic',None):
+
+			tlist.pics = uploads(request)
+
+			# 判断分类图片类型
+
+			if tlist.pics==1:
+				return HttpResponse('<script>alert("上传的图片类型不符合要求");location.href="'+reverse('myadmin_user_add')+'"</script>')		
+
 		tlist.save()
 
 		return HttpResponse('<script>alert("添加成功");location.href="'+reverse('myadmin_types_list')+'"</script>')
@@ -89,9 +99,9 @@ def list(request):
 
 			typelist = Types.objects.filter(name__contains=keywords).extra(select={'paths':'concat(path,id)'}).order_by('paths')
 
-		elif types=='pname':
-
-			typelist = Types.objects.filter(name__contains=keywords).extra(select={'paths':'concat(path,id)'}).order_by('paths')
+		# elif types=='pname':
+			
+		# 	typelist = Types.objects.filter(name__contains=keywords).extra(select={'paths':'concat(path,id)'}).order_by('paths')
 
 	else:
 		# 获取所有的分类信息
@@ -110,7 +120,7 @@ def list(request):
 		num = i.path.count(',')-1
 		i.name = (num*'|----')+i.name
 	# 分配数据
-	paginator = Paginator(typelist, 3)
+	paginator = Paginator(typelist, 10)
 
     # 获取当前页码数
 	p = request.GET.get('p',1)
@@ -143,10 +153,14 @@ def delete(request):
 
 	num = Types.objects.filter(pid=uid).count()
 
+	# num2 = Types.objects.get(id=uid)
+
+	# print(num2.Goods_set)
 	if num !=0:
 		date = {'msg':'当前商品类有其他子类,不能删除','code':1}
 	else:
 		ob = Types.objects.get(id=uid)
+		os.remove('.'+obj.pics)
 		ob.delete()
 
 		date = {'msg':'删除成功','code':0}
@@ -179,6 +193,18 @@ def update(request):
 	elif request.method == 'POST':
 
 		try:
+			if request.FILES.get('pic',None):
+
+                # 判断是否使用的默认图
+
+				if ob.pics:
+
+                    # 如果使用的不是默认图,则删除之前上传的头像
+
+					os.remove('.'+ob.pics)
+
+                # 执行上传
+				ob.pics = uploads(request)			
 			ob.name = request.POST['name']
 			ob.save()
 
