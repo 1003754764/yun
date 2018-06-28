@@ -36,4 +36,25 @@ urlpatterns = [
     # 验证码
     url(r'^vcode$',views.vcode,name="myhome_vcode"),
 
+    #加入购物车
+
+    url(r'^addcart/$',views.addcart,name="myhome_addcart"),
+
+    # 购物车列表
+
+    url(r'^cartlist/$',views.cartlist,name="myhome_cartlist"),
+
+    # 删除购物车的一个商品
+
+    url(r'^delcart/$',views.delcart,name="myhome_delcart"),
+
+    # 修改购物车商品数量
+
+    url(r'^updatecart/$',views.updatecart,name="myhome_updatecart"),
+
+    # 清空购物车
+    
+    url(r'^cartclear/$',views.cartclear,name="myhome_cartclear"),
+
+
 ]

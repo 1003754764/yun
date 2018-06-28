@@ -7,58 +7,58 @@ from django.contrib.auth.hashers import make_password, check_password
 
 # 首页
 def index(request):
-    '''
-        [
-            {
-            'name':'点心/蛋糕',
-            'sub':[
-                    {'name':'点心',
-                        'goodssub':[
-                            {goods objects},
-                            {goods objects},
-                            {goods objects}
-                        ]
-                    },
-                    
-                    {'name':'蛋糕',
-                        'goodssub':[
-                            {goods objects},
-                            {goods objects},
-                            {goods objects}
-                        ]
-                    }
-                ]
-            },
-            
-            {
-            'name':'饼干/膨化',
-            'sub':[
-                    {'name':'饼干','goodssub':[{goods objects},{goods objects},{goods objects}]},
-                    {'name':'膨化','goodssub':[{goods objects},{goods objects},{goods objects}]}
-                ]
-            },
-        ]
-    '''
-    # 获取所有的顶级分类
-    date = Types.objects.filter(pid=0)
+	'''
+		[
+			{
+			'name':'点心/蛋糕',
+			'sub':[
+					{'name':'点心',
+						'goodssub':[
+							{goods objects},
+							{goods objects},
+							{goods objects}
+						]
+					},
+					
+					{'name':'蛋糕',
+						'goodssub':[
+							{goods objects},
+							{goods objects},
+							{goods objects}
+						]
+					}
+				]
+			},
+			
+			{
+			'name':'饼干/膨化',
+			'sub':[
+					{'name':'饼干','goodssub':[{goods objects},{goods objects},{goods objects}]},
+					{'name':'膨化','goodssub':[{goods objects},{goods objects},{goods objects}]}
+				]
+			},
+		]
+	'''
+	# 获取所有的顶级分类
+	date = Types.objects.filter(pid=0)
 
-    # 定义二级分类
+	# 定义二级分类
 
-    erdate = []
+	erdate = []
 
-    for i in date:
-    	# 获取当前顶级分类下的子类
-    	i.sub = Types.objects.filter(pid=i.id)
+	for i in date:
+		# 获取当前顶级分类下的子类
+		i.sub = Types.objects.filter(pid=i.id)
 
-    	for j in i.sub:
-    		# 获取子类下的商品
-    		j.goodssub = Goods.objects.filter(typeid=j.id)
+		for j in i.sub:
+			# 获取子类下的商品
+			j.goodssub = Goods.objects.filter(typeid=j.id)
 
-    		erdate.append(j)
+			erdate.append(j)
 
-    obj = {'tglist':date,'erdate':erdate}
+	obj = {'tglist':date,'erdate':erdate}
 
-    return render(request,'myhome/index.html',obj)
+	return render(request,'myhome/index.html',obj)
 	
 	# return HttpResponse('首页')
 
@@ -77,9 +77,18 @@ def list(request,tid):
 def info(request,sid):
 	try:
 		# 根据商品id获取商品信息
-		date = Goods.objects.filter(id=sid)
+		date = Goods.objects.get(id=sid)
+		
+		# 修改商品的点击量
+		date.clicknum = date.clicknum+1
 
-		context = {'ginfo':date}
+		# print(date.clicknum)
+
+		# date.price = float(date.price)
+
+		date.save()
+
+		context = {'ginfo':date,'pricea':float(date.price)}
 		return render(request,"myhome/info.html",context)
 
 	except:
@@ -124,7 +133,7 @@ def login(request):
 def logout(request):
 
 	request.session['VipUser'] = {}
-                
+				
 	return HttpResponse('<script>alert("退出成功");location.href="/"</script>')
 
 
@@ -151,11 +160,11 @@ def register(request):
 
 		del date['csrfmiddlewaretoken']
 
-        # 删除验证码
+		# 删除验证码
 		del date['vcode']
 
 		try:
-        	# 密码加密
+			# 密码加密
 
 			date['password'] = make_password(date['password'],None, 'pbkdf2_sha256')
 
@@ -194,51 +203,139 @@ def search(request):
 
 
 
-
-
 # 验证码
 def vcode(request):
-    #引入绘图模块
-    from PIL import Image, ImageDraw, ImageFont
-    #引入随机函数模块
-    import random
-    #定义变量，用于画面的背景色、宽、高
-    bgcolor = (random.randrange(20, 100), random.randrange(
-        20, 100), 255)
-    width = 100
-    height = 25
-    #创建画面对象
-    im = Image.new('RGB', (width, height), bgcolor)
-    #创建画笔对象
-    draw = ImageDraw.Draw(im)
-    #调用画笔的point()函数绘制噪点
-    for i in range(0, 100):
-        xy = (random.randrange(0, width), random.randrange(0, height))
-        fill = (random.randrange(0, 255), 255, random.randrange(0, 255))
-        draw.point(xy, fill=fill)
-    #定义验证码的备选值
-    str1 = 'ABCD123EFGHIJK456LMNOPQRS789TUVWXYZ0'
-    #随机选取4个值作为验证码
-    rand_str = ''
-    for i in range(0, 4):
-        rand_str += str1[random.randrange(0, len(str1))]
-    #构造字体对象
-    font = ImageFont.truetype('FreeMono.ttf', 23)
-    #构造字体颜色
-    fontcolor = (255, random.randrange(0, 255), random.randrange(0, 255))
-    #绘制4个字
-    draw.text((5, 2), rand_str[0], font=font, fill=fontcolor)
-    draw.text((25, 2), rand_str[1], font=font, fill=fontcolor)
-    draw.text((50, 2), rand_str[2], font=font, fill=fontcolor)
-    draw.text((75, 2), rand_str[3], font=font, fill=fontcolor)
-    #释放画笔
-    del draw
-    #存入session，用于做进一步验证
-    request.session['verifycode'] = rand_str
-    #内存文件操作
-    import io
-    buf = io.BytesIO()
-    #将图片保存在内存中，文件类型为png
-    im.save(buf, 'png')
-    #将内存中的图片数据返回给客户端，MIME类型为图片png
-    return HttpResponse(buf.getvalue(), 'image/png')
+	#引入绘图模块
+	from PIL import Image, ImageDraw, ImageFont
+	#引入随机函数模块
+	import random
+	#定义变量，用于画面的背景色、宽、高
+	bgcolor = (random.randrange(20, 100), random.randrange(
+		20, 100), 255)
+	width = 100
+	height = 25
+	#创建画面对象
+	im = Image.new('RGB', (width, height), bgcolor)
+	#创建画笔对象
+	draw = ImageDraw.Draw(im)
+	#调用画笔的point()函数绘制噪点
+	for i in range(0, 100):
+		xy = (random.randrange(0, width), random.randrange(0, height))
+		fill = (random.randrange(0, 255), 255, random.randrange(0, 255))
+		draw.point(xy, fill=fill)
+	#定义验证码的备选值
+	str1 = 'ABCD123EFGHIJK456LMNOPQRS789TUVWXYZ0'
+	#随机选取4个值作为验证码
+	rand_str = ''
+	for i in range(0, 4):
+		rand_str += str1[random.randrange(0, len(str1))]
+	#构造字体对象
+	font = ImageFont.truetype('FreeMono.ttf', 23)
+	#构造字体颜色
+	fontcolor = (255, random.randrange(0, 255), random.randrange(0, 255))
+	#绘制4个字
+	draw.text((5, 2), rand_str[0], font=font, fill=fontcolor)
+	draw.text((25, 2), rand_str[1], font=font, fill=fontcolor)
+	draw.text((50, 2), rand_str[2], font=font, fill=fontcolor)
+	draw.text((75, 2), rand_str[3], font=font, fill=fontcolor)
+	#释放画笔
+	del draw
+	#存入session，用于做进一步验证
+	request.session['verifycode'] = rand_str
+	#内存文件操作
+	import io
+	buf = io.BytesIO()
+	#将图片保存在内存中，文件类型为png
+	im.save(buf, 'png')
+	#将内存中的图片数据返回给客户端，MIME类型为图片png
+	return HttpResponse(buf.getvalue(), 'image/png')
+
+
+# 加入购物车
+def addcart(request):
+
+	# 获取商品id,商品购买数量
+	sid = request.GET['sid']
+
+	num = int(request.GET['num'])
+
+	# 先获取购物车的商品数据
+
+	date = request.session.get('cart',{})
+
+
+	# 判断商品是否在购物车里
+	if sid in date.keys():
+		# 存在商品数量相加
+		date[sid]['num'] += num
+
+	else:
+		# 不存在
+		ob = Goods.objects.get(id=sid)
+
+		goods = {'id':ob.id,'title':ob.title,'price':float(ob.price),'pics':ob.pics,'num':num}
+
+		date[sid] = goods
+
+	# 把购物车存入session
+
+	request.session['cart'] = date
+
+	return HttpResponse(1)
+
+
+# 购物车列表
+def cartlist(request):
+
+	# ob = request.session.get('cart',None)	
+	ob = request.session['cart']
+
+	if ob:
+		date = ob.values()
+	else:
+		date={}
+
+	# for i in date:
+	# 	print(i.num)
+
+	return render(request,'myhome/cart.html',{'date':date})
+
+
+
+
+# 删除购物车的商品
+def delcart(request):
+	# 获取商品id
+	sid = request.GET['sid']
+	# 获取购物车数据
+	date = request.session['cart']
+	# 删除商品id相等的购物车商品
+	del date[sid]
+	# 重新存入session
+	request.session['cart'] = date
+
+	return HttpResponse('0')
+
+
+
+# 修改购物车的商品数量
+def updatecart(request):
+	
+	sid = request.GET['sid']
+
+	num = int(request.GET['num'])
+
+	date = request.session['cart']
+
+	date[sid]['num'] = num
+
+	request.session['cart'] = date
+
+	return HttpResponse('0')
+
+# 清空购物车
+def cartclear(request):
+	
+	request.session['cart'] = {}
+
+	return HttpResponse('<script>location.href="/cartlist/"</script>')

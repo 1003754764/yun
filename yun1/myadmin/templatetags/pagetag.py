@@ -5,6 +5,23 @@ from django.utils.html import format_html
 register = template.Library()
 
 
+
+@register.filter
+def pricetwo(n):
+
+	q = n*1.5
+
+	return q
+
+@register.simple_tag
+def cheng(n1,n2):
+
+	# print(type(n2))
+
+	n3 = n1*n2
+
+	return round(n3,2)
+
 @register.simple_tag
 def page(c,request):
 	# c 总页数

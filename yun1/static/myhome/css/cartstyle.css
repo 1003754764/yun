@@ -106,7 +106,7 @@ body, button, input, select, textarea {
 .td.td-amount .sl input.text_box{border:1px solid #ddd;}
 /*布局 */
 .cart-table-th .th-item .td-inner {padding-left:0px;}  	
-.th.th-item,.td.td-item,.td.td-info{width:50%;}
+.th.th-item,.td.td-item,.td.td-info{width:29%;}
 .th.th-item{margin-right:-40px;}
 /*价格*/
 .th.th-price,.td.td-price,.th.th-amount,.td.td-amount{position:static;width:15%;text-align: center;}

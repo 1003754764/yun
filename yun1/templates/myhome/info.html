@@ -27,7 +27,7 @@
             <div class="nav-cont">
                 <ul>
                     <li class="index">
-                        <a href="#">首页</a></li>
+                        <a href="{% url 'myhome_index' %}">首页</a></li>
                     <li class="qc">
                         <a href="#">闪购</a></li>
                     <li class="qc">
@@ -108,8 +108,8 @@
                             });
                         });</script>
                     <div class="tb-booth tb-pic tb-s310">
-                        <a href="{{ ginfo.pics }}">
-                            <img src="{{ ginfo.pics }}" alt="细节展示放大镜特效" rel="{{ ginfo.pics }}" class="jqzoom" style="cursor: crosshair;"></a>
+                        <a href="{{ ginfo.picbig }}">
+                            <img src="{{ ginfo.pics }}" alt="细节展示放大镜特效" rel="{{ ginfo.picbig }}" class="jqzoom" style="cursor: crosshair;"></a>
                     </div>
 <!--                     <ul class="tb-thumb" id="thumblist">
                         <li class="tb-selected">
@@ -134,6 +134,7 @@
                 </div>
                 <div class="clear"></div>
             </div>
+            {% load pagetag %}
             <div class="clearfixRight">
                 <!--规格属性-->
                 <!--名称-->
@@ -146,13 +147,13 @@
                             <dt>促销价</dt>
                             <dd>
                                 <em>¥</em>
-                                <b class="sys_item_price">56.90</b></dd>
+                                <b class="sys_item_price">{{ ginfo.price }}</b></dd>
                         </li>
                         <li class="price iteminfo_mktprice">
                             <dt>原价</dt>
                             <dd>
                                 <em>¥</em>
-                                <b class="sys_item_mktprice">98.00</b></dd>
+                                <b class="sys_item_mktprice">{{ pricea|pricetwo }}</b></dd>
                         </li>
                         <div class="clear"></div>
                     </div>
@@ -242,19 +243,19 @@
                     <ul class="tm-ind-panel">
                         <li class="tm-ind-item tm-ind-sellCount canClick">
                             <div class="tm-indcon">
-                                <span class="tm-label">月销量</span>
-                                <span class="tm-count">1015</span></div>
+                                <span class="tm-label">销量</span>
+                                <span class="tm-count">{{ ginfo.num }}</span></div>
                         </li>
                         <li class="tm-ind-item tm-ind-sumCount canClick">
                             <div class="tm-indcon">
-                                <span class="tm-label">累计销量</span>
-                                <span class="tm-count">6015</span></div>
+                                <span class="tm-label">商品点击量</span>
+                                <span class="tm-count">{{ ginfo.clicknum }}</span></div>
                         </li>
-                        <li class="tm-ind-item tm-ind-reviewCount canClick tm-line3">
+<!--                         <li class="tm-ind-item tm-ind-reviewCount canClick tm-line3">
                             <div class="tm-indcon">
                                 <span class="tm-label">累计评价</span>
                                 <span class="tm-count">640</span></div>
-                        </li>
+                        </li> -->
                     </ul>
                     <div class="clear"></div>
                     <!--各种规格-->
@@ -273,7 +274,7 @@
                                 <div class="theme-popbod dform">
                                     <form class="theme-signin" name="loginform" action="" method="post">
                                         <div class="theme-signin-left">
-                                            <div class="theme-options">
+<!--                                             <div class="theme-options">
                                                 <div class="cart-title">口味</div>
                                                 <ul>
                                                     <li class="sku-line selected">原味
@@ -303,7 +304,7 @@
                                                         <i></i>
                                                     </li>
                                                 </ul>
-                                            </div>
+                                            </div> -->
                                             <div class="theme-options">
                                                 <div class="cart-title number">数量</div>
                                                 <dd>
@@ -311,21 +312,21 @@
                                                     <input id="text_box" name="" type="text" value="1" style="width:30px;">
                                                     <input id="add" class="am-btn am-btn-default" name="" type="button" value="+">
                                                     <span id="Stock" class="tb-hidden">库存
-                                                        <span class="stock">1000</span>件</span></dd>
+                                                        <span class="stock">{{ ginfo.store }}</span>件</span></dd>
                                             </div>
                                             <div class="clear"></div>
                                             <div class="btn-op">
                                                 <div class="btn am-btn am-btn-warning">确认</div>
                                                 <div class="btn close am-btn am-btn-warning">取消</div></div>
                                         </div>
-                                        <div class="theme-signin-right">
+<!--                                         <div class="theme-signin-right">
                                             <div class="img-info">
                                                 <img src="/static/myhome/images/songzi.jpg"></div>
                                             <div class="text-info">
                                                 <span class="J_Price price-now">¥39.00</span>
                                                 <span id="Stock" class="tb-hidden">库存
-                                                    <span class="stock">1000</span>件</span></div>
-                                        </div>
+                                                    <span class="stock">{{ ginfo.store }}</span>件</span></div>
+                                        </div> -->
                                     </form>
                                 </div>
                             </div>
@@ -335,9 +336,9 @@
                     <!--活动 -->
                     <div class="shopPromotion gold">
                         <div class="hot">
-                            <dt class="tb-metatit">店铺优惠</dt>
+                            <dt class="tb-metatit">商品描述</dt>
                             <div class="gold-list">
-                                <p>购物满2件打8折，满3件7折
+                                <p>{{ ginfo.descr }}
                                     <span>点击领券
                                         <i class="am-icon-sort-down"></i></span>
                                 </p>
@@ -357,18 +358,18 @@
                 </div>
                 <div class="pay">
                     <div class="pay-opt">
-                        <a href="home.html">
+                        <a href="{% url 'myhome_index' %}">
                             <span class="am-icon-home am-icon-fw">首页</span></a>
                         <a>
                             <span class="am-icon-heart am-icon-fw">收藏</span></a>
                     </div>
                     <li>
                         <div class="clearfix tb-btn tb-btn-buy theme-login">
-                            <a id="LikBuy" title="点此按钮到下一步确认购买信息" href="#">立即购买</a></div>
+                            <a id="LikBuy" title="点此按钮到下一步确认购买信息" href="{% url 'myhome_cartlist' %}">立即购买</a></div>
                     </li>
                     <li>
                         <div class="clearfix tb-btn tb-btn-basket theme-login">
-                            <a id="LikBasket" title="加入购物车" href="#">
+                            <a id="LikBasket" title="加入购物车" href="javascript:void(0)">
                                 <i>
                                 </i>加入购物车</a>
                         </div>
@@ -376,10 +377,27 @@
                 </div>
             </div>
             <div class="clear"></div>
+            <script type="text/javascript">
+                // 加入购物车
+                $('#LikBasket').click(function(){
+                    var num = $('#text_box').val()
+
+                    var sid = {{ ginfo.id }}
+
+                    $.get('{% url "myhome_addcart" %}',{num:num,sid:sid},function(date){
+                        if(date == '1'){
+                            alert('加入购物车成功')
+                        }else{
+                            alert('加入购物车失败')
+                        }
+
+                    })
+                })
+            </script>
         </div>
         <!--优惠套装-->
         <div class="match">
-            <div class="match-title">优惠套装</div>
+           <!--  <div class="match-title">优惠套装</div>
             <div class="match-comment">
                 <ul class="like_list">
                     <li>
@@ -419,7 +437,7 @@
                         <i class="am-icon-angle-right"></i>
                     </li>
                 </ul>
-            </div>
+            </div> -->
         </div>
         <div class="clear"></div>
         <!-- introduce-->
@@ -500,7 +518,9 @@
                     </ul>
                     <div class="am-tabs-bd" style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
                         <div class="am-tab-panel am-fade am-in am-active">
-                            <div class="J_Brand">
+
+                             {{ ginfo.info|safe }}
+<!--                             <div class="J_Brand">
                                 <div class="attr-list-hd tm-clear">
                                     <h4>产品参数：</h4></div>
                                 <div class="clear"></div>
@@ -528,8 +548,8 @@
                                     <img src="/static/myhome/images/tw5.jpg">
                                     <img src="/static/myhome/images/tw6.jpg">
                                     <img src="/static/myhome/images/tw7.jpg"></div>
-                            </div>
-                            <div class="clear"></div>
+                            </div> -->
+                            <!-- <div class="clear"></div> -->
                         </div>
                         <div class="am-tab-panel am-fade">
                             <div class="actor-new">

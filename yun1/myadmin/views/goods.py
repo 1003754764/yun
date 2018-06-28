@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from .user import uploads
 
-import os
+import time,random,os
 
 # 获取所有的分类信息
 def gettypes():
@@ -51,6 +51,27 @@ def add(request):
 
 				return HttpResponse('<script>alert("请上传商品图片");location.href="'+reverse('myadmin_goods_add')+'"</script>')
 
+			# 判断商品放大图是否上传
+			if request.FILES.get('picbig',None):
+
+				# file = request.FILES['picbig']
+
+				# print(file)
+
+				picbig = uploadsbig(request)
+
+				# print(picbig)
+				
+
+				# 判断头像图片类型
+
+				if picbig==1:
+					return HttpResponse('<script>alert("上传的商品放大图类型不符合要求");location.href="'+reverse('myadmin_goods_add')+'"</script>')
+				# else:
+					# del date['pic']
+			else:
+
+				return HttpResponse('<script>alert("请上传商品放大图");location.href="'+reverse('myadmin_goods_add')+'"</script>')
 			# 格式化表单提交的数据
 
 			date = request.POST.copy().dict()
@@ -60,6 +81,7 @@ def add(request):
 			del date['csrfmiddlewaretoken']
 
 			date['pics'] = pic
+			date['picbig'] = picbig
 			date['typeid'] = Types.objects.get(id=date['typeid'])
 			# 商品创建
 
@@ -130,7 +152,7 @@ def list(request):
 		# 获取所有的商品信息
 		goodslist = Goods.objects.filter()
 	# 分配数据
-	paginator = Paginator(goodslist, 3)
+	paginator = Paginator(goodslist, 10)
     # 获取当前页码数
 	p = request.GET.get('p',1)
     # 获取当前页的数据
@@ -151,6 +173,7 @@ def delete(request):
 		obj.delete()
 
 		os.remove('.'+obj.pics)
+		os.remove('.'+obj.picbig)
 
 		date = {'msg':"删除成功",'code':1}
 
@@ -170,6 +193,8 @@ def update(request):
 	# 根据商品id查出商品
 
 	ob = Goods.objects.get(id=gid)
+	# print(ob.pics)
+	# print(ob.picbig)
 
 	if request.method == 'GET':
 
@@ -182,20 +207,39 @@ def update(request):
 	elif request.method == 'POST':
 
 		try:
-            # 判断是否上传新的图片
+	            # 判断是否上传新的图片
 			if request.FILES.get('pic',None):
 
-                # 判断是商品图片是否存在
+	            # 判断是商品图片是否存在
 
 				if ob.pics:
 
-                    # 删除之前上传的商品
+	                # 删除之前上传的商品
 
 					os.remove('.'+ob.pics)
 
-                # 执行上传
+	            	# 执行上传
 				ob.pics = uploads(request)
-                
+
+			# print(request.FILES['pic'])
+
+	        # 判断是否上传新商品大图图片
+			# print(request.FILES.get('picbig'))
+			if request.FILES.get('picbig',None):
+
+	            # 判断是商品大图图片是否存在
+				# print(1)
+				if ob.picbig:
+
+	                # 删除之前上传的商品大图
+
+					os.remove('.'+ob.picbig)
+
+	            # 执行上传
+				# print(request)
+				ob.picbig = uploadsbig(request)
+				
+				# print(request.FILES['picbig'])              
 			ob.typeid = Types.objects.get(id=request.POST['typeid'])
 			ob.title = request.POST['title']
 			ob.descr = request.POST['descr']
@@ -211,7 +255,44 @@ def update(request):
 			return HttpResponse('<script>alert("修改失败");location.href="'+reverse('myadmin_goods_update')+'?gid='+str(ob.id)+'"</script>')
 
 
+# 图片上传
+def uploadsbig(request):
+    
 
+    # 获取请求中的 文件
+    myfile = request.FILES.get('picbig',None)
+
+    # 获取上传的文件后缀名
+    p = myfile.name.split('.').pop()
+
+    # print(p)
+
+    # 定义图片类型
+
+    arr = ['jpg','png','jpeg','gif']
+
+    # 判断图片类型
+
+    if p not in arr:
+        return 1
+
+
+    # 生成新的文件名
+    filename = str(time.time())+str(random.randint(1,99999))+'.'+p
+    
+    # 打开文件
+    destination = open("./static/pics/"+filename,"wb+")
+
+    # 分块写入文件  
+    for chunk in myfile.chunks():      
+       destination.write(chunk)  
+
+    # 关闭文件
+    destination.close()
+    
+    # 返回拼接的图片地址
+
+    return '/static/pics/'+filename
 
 
 

@@ -43,6 +43,8 @@ class Goods(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     # 商品图片
     pics = models.CharField(max_length=100)
+    # 商品大图
+    picbig = models.CharField(max_length=100,null=True)
     # 商品状态 0 新发布,1下架
     status = models.IntegerField(default=0)
     # 商品库存数量
