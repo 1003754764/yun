@@ -98,6 +98,7 @@ def info(request,sid):
 # 登录
 def login(request):
 
+	nexturl = request.GET.get('next','/')
 	if request.method == 'GET':
 
 		return render(request,"myhome/login.html")
@@ -120,7 +121,7 @@ def login(request):
 
 				request.session['VipUser'] = {'uid':ob.id,'username':ob.username}
 
-				return HttpResponse('<script>alert("登录成功");location.href="/"</script>')
+				return HttpResponse('<script>alert("登录成功");location.href="'+nexturl+'"</script>')
 
 		except:
 
@@ -339,3 +340,31 @@ def cartclear(request):
 	request.session['cart'] = {}
 
 	return HttpResponse('<script>location.href="/cartlist/"</script>')
+
+
+def ordercheck():
+	pass
+
+def addressedit():
+	pass
+
+def addressadd():
+	pass
+
+def ordercreate():
+	pass
+
+
+def buy():
+	pass
+
+
+def mycenter():
+	pass
+
+
+def myorders():
+	pass
+
+
+

@@ -41,11 +41,16 @@
             <div class="clear"></div>
             <div class="bundle-main">
             	{% load pagetag %}
+                {% if not date %}
+                    <div style="height:300px;line-height: 300px;text-align: center;">
+                    <p>购物车空空如也...</p>
+                    </div>
+                {% endif %}
             	{% for i in date %}
                 <ul class="item-content clearfix">
                     <li class="td td-chk">
-                        <div class="cart-checkbox ">
-                            <input class="check" id="J_CheckBox_170037950254" name="items[]" value="170037950254" type="checkbox">
+                        <div class="cart-checkbox jcheck">
+                            <input class="check" id="{{ i.id }}" name="items[]" value="{% cheng i.price i.num %}" type="checkbox">
                             <label for="J_CheckBox_170037950254"></label>
                         </div>
                     </li>
@@ -93,6 +98,9 @@
                 {% endfor %}
 
                 <script type="text/javascript">
+                $(function(){
+
+
 	                $('.delete').click(function(){
 	                    sid = $(this).attr('sid')
 	                    del = $(this)
@@ -114,6 +122,52 @@
                 			})
                 		},20)
                 	})
+                    // 计算总价和计算选择的商品信息
+                    function computer(){
+                        items = []
+                        totalnum = 0
+                        $('.jcheck .check').each(function(){
+                            res = this.checked
+                            if(res){
+                                totalnum +=Number($(this).val())
+                                goodsid = $(this).attr('id')
+                                goodsnum = Number($(this).parents('ul').find('input[name=num]').val())
+                                items.push({'goodsid':goodsid,'num':goodsnum})
+                            }
+                        })
+                        // 把计算的总价设置到html中
+                        $('#J_Total').text(totalnum.toFixed(2))
+                        res = JSON.stringify(items);
+                        $('input[name=items]').val(res)
+
+                    }
+                    $('.jcheck .check').click(computer)
+
+                    $('.check-all').click(function(){
+                        if(this.checked){
+                            // 选择所有的商品  点击全选
+                            $('.jcheck .check').attr('checked',true)
+                        }else{
+                            // 取消全选
+                            $('.jcheck .check').attr('checked',false)
+                        }
+                        computer()
+                    })
+                    var user = '{{ request.session.VipUser.username }}'
+                    $('#J_Go').click(function(){
+                        var res = $('input[name=items]').val()
+                        if(res){
+                            if(user){
+                                $(this).parents('form').submit()
+                            }else{
+                                location.href = '{% url "myhome_login" %}?next=/cartlist/'
+                            }
+                        }else{
+                             alert('请选择购买的商品')
+                        }
+                    })
+
+                })
                 </script>
             </div>
         </div>
@@ -146,9 +200,12 @@
                     <em id="J_Total">0.00</em></strong>
             </div>
             <div class="btn-area">
-                <a href="pay.html" id="J_Go" class="submit-btn submit-btn-disabled" aria-label="请注意如果没有选择宝贝，将无法结算">
+                <form action="{% url 'myhome_ordercheck'%}" method="get">
+                    {% csrf_token %}
+                    <input type="hidden" name="items" value="">
+                    <a href="javascript:void(0)" id="J_Go" class="submit-btn submit-btn-disabled" aria-label="请注意如果没有选择宝贝，将无法结算">
                     <span>结&nbsp;算</span></a>
-            </div>
+                </form>
         </div>
     </div>
     <div class="footer">

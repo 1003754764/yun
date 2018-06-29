@@ -56,5 +56,27 @@ urlpatterns = [
     
     url(r'^cartclear/$',views.cartclear,name="myhome_cartclear"),
 
+    # 订单确认
+    url(r'^ordercheck/$',views.ordercheck,name="myhome_ordercheck"),
+
+    # 收货地址修改
+    url(r'^addressedit/$',views.addressedit,name="myhome_addressedit"),
+
+    # 收货地址增加
+    url(r'^addressadd/$',views.addressadd,name="myhome_addressadd"),
+
+    # 生成订单
+    url(r'^ordercreate/$',views.ordercreate,name="myhome_ordercreate"),
+
+    # 进行支付
+    url(r'^buy/$',views.buy,name="myhome_buy"),
+
+    # 个人中心
+    url(r'^mycenter/$',views.mycenter,name="myhome_mycenter"),
+
+    # 我的订单
+    url(r'^myorders/$',views.myorders,name="myhome_myorders"),
+
+
 
 ]
