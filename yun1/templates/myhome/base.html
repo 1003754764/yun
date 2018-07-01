@@ -45,7 +45,7 @@
                         <div class="menu-hd"><a href="{% url 'myhome_index' %}" target="_top" class="h">商城首页</a></div>
                     </div>
                     <div class="topMessage my-shangcheng">
-                        <div class="menu-hd MyShangcheng"><a href="#" target="_top"><i class="am-icon-user am-icon-fw"></i>个人中心</a></div>
+                        <div class="menu-hd MyShangcheng"><a href="{% url 'myhome_mycenter' %}" target="_top"><i class="am-icon-user am-icon-fw"></i>个人中心</a></div>
                     </div>
                     <div class="topMessage mini-cart">
                         <div class="menu-hd"><a id="mc-menu-hd" href="{% url 'myhome_cartlist' %}" target="_top"><i class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span><strong id="J_MiniCartNum" class="h">0</strong></a></div>
@@ -441,6 +441,12 @@
                 </div>
             </div>
         </div>
+
+
+        {% block f %}
+
+        {% endblock %}
+        
         <script>
             window.jQuery || document.write('<script src="basic/js/jquery.min.js "><\/script>');
         </script>

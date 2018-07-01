@@ -1,0 +1,60 @@
+{% extends 'myhome/base.html' %}
+{% block title %}
+    <title>付款成功</title>
+{% endblock %}
+
+{% block css %}
+<link href="/static/myhome/css/sustyle.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+
+{% block con %}
+<div class="take-delivery">
+    <div class="status">
+        <h2>您已成功付款</h2>
+        <div class="successInfo">
+            <ul>
+                <li>付款金额
+                    <em>¥{{ date.totalprice }}</em></li>
+                <div class="user-info">
+                    <p>收货人：{{ date.addressid.name }}</p>
+                    <p>联系电话：{{ date.addressid.phone }}</p>
+                    <p>收货地址：{{ date.addressid.address }}</p>
+                </div>请认真核对您的收货信息，如有错误请联系客服</ul>
+            <div class="option">
+                <span class="info">您可以</span>
+                <a href="../person/order.html" class="J_MakePoint">查看
+                    <span>已买到的宝贝</span></a>
+                <a href="../person/orderinfo.html" class="J_MakePoint">查看
+                    <span>交易详情</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="footer-hd">
+        <p>
+            <a href="#">云霄科技</a>
+            <b>|</b>
+            <a href="#">商城首页</a>
+            <b>|</b>
+            <a href="#">支付宝</a>
+            <b>|</b>
+            <a href="#">物流</a></p>
+    </div>
+    <div class="footer-bd">
+        <p>
+            <a href="#">关于云霄</a>
+            <a href="#">合作伙伴</a>
+            <a href="#">联系我们</a>
+            <a href="#">网站地图</a>
+            <em>© 2015-2025 yunxiao.com 版权所有</em></p>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+

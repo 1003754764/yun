@@ -74,6 +74,10 @@ urlpatterns = [
     # 个人中心
     url(r'^mycenter/$',views.mycenter,name="myhome_mycenter"),
 
+    # 个人信息
+    url(r'^information/$',views.information,name="myhome_information"),
+
+
     # 我的订单
     url(r'^myorders/$',views.myorders,name="myhome_myorders"),
 

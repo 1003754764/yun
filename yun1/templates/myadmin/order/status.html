@@ -1,0 +1,56 @@
+{% extends 'myadmin/public/base.html' %}
+
+{% block title %}
+<title>订单状态修改</title>
+
+{% endblock %}
+
+{% block header %}
+    <div class="container-fluid am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                <div class="page-header-heading"><span class="am-icon-cart-plus sidebar-nav-link-logo"></span> 订单状态修改 </div>
+                <!-- <p class="page-header-description">Amaze UI 含近 20 个 CSS 组件、20 余 JS 组件，更有多个包含不同主题的 Web 组件。</p> -->
+            </div>
+            <div class="am-u-lg-3 tpl-index-settings-button">
+                <button type="button" class="page-header-button"><span class="am-icon-paint-brush"></span> 设置</button>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+
+{% block con %}
+<div class="row">
+    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+        <div class="widget am-cf">
+            <div class="widget-body am-fr">
+
+                <form action="{% url 'myadmin_order_status' %}?oid={{ oinfo.id }}" method="post" enctype="multipart/form-data" class="am-form tpl-form-line-form" id="uploadForm" >
+                    {% csrf_token %}
+                    
+                    <div class="am-form-group">
+                        <label for="user-name" class="am-u-sm-3 am-form-label">
+                            订单状态
+                        </label>
+                        <div class="am-u-sm-9">
+                            <label class="am-radio-inline"><input type="radio" value="0" name="status" {% if oinfo.status == 0 %} checked {% endif %}> 未付款</label>
+                            <label class="am-radio-inline"><input type="radio" value="1" name="status" {% if oinfo.status == 1 %} checked {% endif %}> 代发货</label>
+                            <label class="am-radio-inline"><input type="radio" value="2" name="status" {% if oinfo.status == 2 %} checked {% endif %}> 待收货</label>
+                            <label class="am-radio-inline"><input type="radio" value="3" name="status" {% if oinfo.status == 3 %} checked {% endif %}> 待评价</label>
+                            <label class="am-radio-inline"><input type="radio" value="4" name="status" {% if oinfo.status == 4 %} checked {% endif %}> 交易完成</label>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9 am-u-sm-push-3">
+                            <button  class="am-btn am-btn-primary tpl-btn-bg-color-success ">修改</button></div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

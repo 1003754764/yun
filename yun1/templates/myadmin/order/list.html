@@ -1,7 +1,7 @@
 {% extends "myadmin/public/base.html" %}
 
 {% block title %}
-<title>后台商品分类列表</title>
+<title>后台订单列表</title>
 
 {% endblock %}
 
@@ -9,7 +9,7 @@
 	<div class="container-fluid am-cf">
 	    <div class="row">
 	        <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
-	            <div class="page-header-heading"><span class="am-icon-table sidebar-nav-link-logo"></span> 商品分类列表 </div>
+	            <div class="page-header-heading"><span class="am-icon-cart-plus sidebar-nav-link-logo"></span> 订单列表 </div>
 	            <!-- <p class="page-header-description">Amaze UI 含近 20 个 CSS 组件、20 余 JS 组件，更有多个包含不同主题的 Web 组件。</p> -->
 	        </div>
 	        <div class="am-u-lg-3 tpl-index-settings-button">
@@ -26,7 +26,7 @@
         <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
             <div class="widget am-cf">
                 <div class="widget-head am-cf">
-                    <div class="widget-title  am-cf">商品分类列表</div>
+                    <div class="widget-title  am-cf">订单列表</div>
 
 
                 </div>
@@ -48,10 +48,13 @@
                         <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
                             <div class="am-form-group tpl-table-list-select">
                                 <select name="type" data-am-selected="{btnSize: 'sm'}" style="display: none;">
-                                  <option value="all" {% if request.GET.type == 'all' %} selected {% endif %}>所有条件</option>
-                                  <option value="id" {% if request.GET.type == 'id' %} selected {% endif %}>ID</option>
-                                  <option value="name" {% if request.GET.type == 'name' %} selected {% endif %}>分类名</option>
-                                <!--   <option value="pname" {% if request.GET.type == 'pname' %} selected {% endif %}>所属分类</option>    -->                              
+                                    <option value="all" {% if request.GET.type == 'all' %} selected {% endif %}>所有条件</option>
+                                    <option value="id" {% if request.GET.type == 'id' %} selected {% endif %}>ID</option>
+                                    <option value="title" {% if request.GET.type == 'totalprice' %} selected {% endif %}>商品总价</option>
+                                    <option value="price" {% if request.GET.type == 'totalnum' %} selected {% endif %}>商品数量</option>
+                                    <option value="store" {% if request.GET.type == 'status' %} selected {% endif %}>订单状态</option>                            
+                                    <option value="addtime" {% if request.GET.type == 'addtime' %} selected {% endif %}>订单添加时间</option>
+
                                 </select>
                             </div>
                         </div>
@@ -69,31 +72,46 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>分类缩略图</th>
-                                    <th>分类名</th>
-                                    <th>所属分类</th>
-                                    <th>分类创建时间</th>
-
+                                    <th>会员名</th>
+                                    <th>会员手机号</th>
+                                    <th>收货地址</th>
+                                    <th>商品总价</th>
+                                    <th>商品数量</th>
+                                    <th>订单状态</th>
+                                    <th>订单创建时间</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            {% for v in tlist %}
+                            {% for i in olist %}
                                 <tr>
-                                    <td class="am-text-middle">{{ v.id }}</td>
-                                    <td>
-                                        <img src="{{ v.pics }}" class="tpl-table-line-img" alt="">
-                                    </td>                                    
-                                    <td class="am-text-middle">{{ v.name }}</td>
-                                    <td class="am-text-middle">{{ v.pname }}</td>
-                                    <td class="am-text-middle">{{ v.addtime|date:"Y-m-d H:i:s" }}</td>
+                                    <td class="am-text-middle">{{ i.id }}</td>
+                                    <td class="am-text-middle">{{ i.addressid.name }}</td>
+                                    <td class="am-text-middle">{{ i.addressid.phone }}</td>
+                                    <td class="am-text-middle">{{ i.addressid.address }}</td>
+                                    <td class="am-text-middle">{{ i.totalprice }}</td>
+                                    <td class="am-text-middle">{{ i.totalnum }}</td>
+                                    <td class="am-text-middle">
+                                        {% if i.status == 0 %}
+                                            未付款
+                                        {% elif i.status == 1 %}
+                                            代发货
+                                        {% elif i.status == 2 %}
+                                            待收货
+                                        {% elif i.status == 3 %}
+                                            待评价
+                                        {% elif i.status == 4 %}
+                                            交易完成
+                                        {% endif %}
+                                    </td>
+                                    <td class="am-text-middle">{{ i.addtime|date:"Y-m-d H:i:s" }}</td>
                                     <td class="am-text-middle">
                                         <div class="tpl-table-black-operation">
-                                            <a href="{% url 'myadmin_types_update' %}?uid={{ v.id }}">
-                                                <i class="am-icon-pencil"></i> 编辑
+                                            <a href="{% url 'myadmin_order_info' %}?oid={{ i.id }}">
+                                                <i class="am-icon-pencil"></i> 订单详情
                                             </a>
-                                            <a href="javascript:;" class="tpl-table-black-operation-del">
-                                                <i class="am-icon-trash"></i> 删除
+                                            <a href="{% url 'myadmin_order_status' %}?oid={{ i.id }}" class="tpl-table-black-operation-del">
+                                                <i class="am-icon-pencil"></i> 修改订单状态
                                             </a>
                                         </div>
                                     </td>
@@ -117,7 +135,7 @@
                                 <li><a href="#">»</a></li> -->
 
                                 {% load pagetag %}
-                                {% page tlist.paginator.num_pages request %}
+                                {% page olist.paginator.num_pages request %}
 
                             </ul>
                         </div>
@@ -127,22 +145,4 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-
-    $('.tpl-table-black-operation-del').click(function(){
-
-        id = $(this).parents('tr').find('td:eq(0)').text()
-
-        str = $(this)
-
-        $.get("{% url 'myadmin_types_delete' %}",{uid:id},function(date){
-            alert(date.msg)
-            if(date.code == 0){
-                str.parents('tr').remove()
-            }
-        })
-
-    })
-</script>
 {% endblock %}

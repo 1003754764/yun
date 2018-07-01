@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 # Create your views here.
-from myadmin.models import Users,Types,Goods
+from myadmin.models import Users,Types,Goods,Address,Orders,OrderInfo
 from django.contrib.auth.hashers import make_password, check_password
 
 
@@ -341,30 +341,138 @@ def cartclear(request):
 
 	return HttpResponse('<script>location.href="/cartlist/"</script>')
 
+# 订单确认
+def ordercheck(request):
+	items = eval(request.GET['items'])
+	date = {}
+	totalprice = 0
+	totalnum = 0
 
-def ordercheck():
-	pass
+	for i in items:
+		ob = Goods.objects.get(id=i['goodsid'])
+		i['title'] = ob.title
+		i['price'] = float(ob.price)
+		i['pics'] = ob.pics
 
-def addressedit():
-	pass
+		totalprice += i['num']*i['price']
+		totalnum += i['num']
+	date['totalprice'] = round(totalprice,2)
+	date['totalnum'] = totalnum
+	date['items'] = items
 
-def addressadd():
-	pass
+	request.session['order'] = date
+	addlist = Address.objects.filter(uid=request.session['VipUser']['uid'])
+	context = {'date':date,'addlist':addlist}
 
-def ordercreate():
-	pass
-
-
-def buy():
-	pass
-
-
-def mycenter():
-	pass
+	return render(request,'myhome/ordercheck.html',context)
 
 
-def myorders():
-	pass
+
+
+# 收货地址修改
+def addressedit(request):
+	aid = int(request.GET['aid'])
+	uid = request.session['VipUser']['uid']
+	# 获取当前用户的所有收货地址
+	obs = Address.objects.filter(uid=uid)
+	for i in obs:
+		if i.id == aid:
+			i.status = 1
+		else:
+			i.status = 0
+		i.save()
+
+	return HttpResponse(0)
+
+# 收货地址增加
+def addressadd(request):
+	# 获取地址信息
+	date = eval(request.GET['date'])
+	# 地址信息拼接
+	date['address']=','.join(date['address'])
+	# 记录用户id
+	date['uid'] = Users.objects.get(id=request.session['VipUser']['uid'])
+	# 添加地址信息
+	res = Address.objects.create(**date)
+
+	return HttpResponse(0)
+
+# 生成订单
+def ordercreate(request):
+	# 接收用户id
+	uid = request.session['VipUser']['uid']
+	# 收货地址id
+	addressid = request.POST['addressid']
+	# 商品信息
+	date = request.session['order']
+	# 购物车数据
+	cart = request.session['cart']
+
+	# 生成订单
+	ob = Orders()
+
+	ob.uid = Users.objects.get(id=uid)
+
+	ob.addressid = Address.objects.get(id=addressid)
+
+	ob.totalprice = date['totalprice']
+
+	ob.totalnum = date['totalnum']
+
+	ob.save()
+	# 订单详情
+	for i in date['items']:
+		oinfo = OrderInfo()
+		oinfo.orderid = ob
+		oinfo.gid = Goods.objects.get(id=i['goodsid'])
+		oinfo.num = i['num']
+		oinfo.save()
+		# 在购物车中删除当前购买的商品
+		del cart[i['goodsid']]
+	# 清除购物车中已经够买的商品,清除order数据
+	request.session['cart'] = cart
+	request.session['order'] = ''
+
+	return HttpResponse('<script>location.href="/buy/?orderid='+str(ob.id)+'"</script>')
+
+# 进行支付
+def buy(request):
+	# 获取订单id
+	orderid = request.GET['orderid']
+	# 获取订单信息
+	date = Orders.objects.get(id=orderid)
+	# 分配数据
+	context = {'date':date}
+
+	return render(request,'myhome/buy.html',context)
+
+# 个人中心
+def mycenter(request):
+	
+	return render(request,'myhome/word/index.html')
+
+
+def information(request):
+	
+	uid = request.session['VipUser']['uid']
+
+	date = Users.objects.get(id=uid)
+
+
+	obj = {'uinfo':date}
+
+	return render(request,'myhome/word/information.html',obj)
+
+# 我的订单
+def myorders(request):
+
+	# 获取当前用户的所有订单信息
+	
+	date = Orders.objects.filter(uid=request.session['VipUser']['uid'])
+
+	context = {'orderlist':date}
+
+	return render(request,'myhome/word/myorders.html',context)
 
 
 
