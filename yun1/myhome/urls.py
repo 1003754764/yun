@@ -77,6 +77,17 @@ urlpatterns = [
     # 个人信息
     url(r'^information/$',views.information,name="myhome_information"),
 
+    # 安全设置
+
+    url(r'^safety/$',views.safety,name="myhome_safety"),
+
+    # 修改密码
+
+    url(r'^password/$',views.password,name="myhome_password"),    
+
+    #收货地址
+
+    url(r'^address/$',views.address,name="myhome_address"),
 
     # 我的订单
     url(r'^myorders/$',views.myorders,name="myhome_myorders"),

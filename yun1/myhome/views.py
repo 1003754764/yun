@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render,reverse
 from django.http import HttpResponse
 # Create your views here.
 from myadmin.models import Users,Types,Goods,Address,Orders,OrderInfo
+from myadmin.views.user import uploads
+import os
 from django.contrib.auth.hashers import make_password, check_password
 
 
@@ -451,17 +453,125 @@ def mycenter(request):
 	
 	return render(request,'myhome/word/index.html')
 
-
+# 个人信息
 def information(request):
+	
+	if request.method == 'GET':
+
+		uid = request.session['VipUser']['uid']
+
+		date = Users.objects.get(id=uid)		
+
+		obj = {'uinfo':date}
+
+		return render(request,'myhome/word/information.html',obj)
+
+	elif request.method == 'POST':
+
+		uid = request.GET.get('uid',None)
+
+		ob = Users.objects.get(id=uid)
+
+		try:
+            # 判断是否上传新的图片
+			if request.FILES.get('pic',None):
+
+		        # 判断是否使用的默认图
+
+				if ob.pic:
+
+		            # 如果使用的不是默认图,则删除之前上传的头像
+
+					os.remove('.'+ob.pic)
+
+		        # 执行上传
+				ob.pic = uploads(request)
+		        
+
+			ob.username = request.POST['username']
+			ob.email = request.POST['email']
+			ob.age = request.POST['age']
+			ob.sex = request.POST['sex']
+			ob.phone = request.POST['phone']
+
+			ob.save()
+		
+		# print(ob.sex)
+
+		# return HttpResponse('0')
+
+			return HttpResponse('<script>alert("修改成功");location.href="'+reverse('myhome_information')+'"</script>')
+		except:
+			return HttpResponse('<script>alert("修改失败");location.href="'+reverse('myhome_information')+'?uid='+str(ob.id)+'"</script>')
+
+
+# 安全设置
+
+def safety(request):
 	
 	uid = request.session['VipUser']['uid']
 
 	date = Users.objects.get(id=uid)
 
+	obj = {'date':date}
 
-	obj = {'uinfo':date}
+	return render(request,'myhome/word/safety.html',obj)
+	# return HttpResponse(0)
 
-	return render(request,'myhome/word/information.html',obj)
+# 修改密码
+def password(request):
+
+	uid = request.session['VipUser']['uid']
+
+	date = Users.objects.get(id=uid)
+
+	if request.method == 'GET':
+
+
+		return render(request,'myhome/word/password.html')
+
+	elif request.method == 'POST':
+
+		pwd = check_password(request.POST['password'],date.password)
+
+		if pwd:
+
+			if request.POST['newpassword'] == request.POST['newpasswordtwo']:
+
+				date.password = make_password(request.POST['newpassword'],None, 'pbkdf2_sha256')
+
+				date.save()
+
+
+				return HttpResponse('<script>alert("修改密码成功");location.href="'+reverse('myhome_safety')+'"</script>')
+
+			else:
+
+				return HttpResponse('<script>alert("俩次密码输入不一致");history.back(-1)</script>')
+			
+
+		else:
+
+			return HttpResponse('<script>alert("原密码输入错误");history.back(-1)</script>')
+	
+	# return HttpResponse('0')
+
+
+
+
+# 收货地址
+
+def address(request):
+	
+	if request.method == 'GET':
+
+		uid = request.session['VipUser']['uid']
+
+		date = Address.objects.filter(uid=uid)
+
+		obj = {'alist':date}
+
+		return render(request,'myhome/word/address.html',obj)
 
 # 我的订单
 def myorders(request):

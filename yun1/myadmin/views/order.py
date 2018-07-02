@@ -27,6 +27,10 @@ def list(request):
 		elif types=='id':
 
 			orderlist = Orders.objects.filter(id__contains=keywords)
+		# 根据会员名查询
+		elif types=='username':
+
+			orderlist = Orders.objects.filter(uid__username__contains=keywords)
 		# 根据商品总价查询
 		elif types=='totalprice':
 

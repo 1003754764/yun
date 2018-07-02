@@ -4,3 +4,9 @@ from django.http import HttpResponse
 def index(request):
 
 	return render(request,'myadmin/index.html')
+
+def login(request):
+	
+	if request.method == 'GET':
+
+		return render(request,'myadmin/login.html')

@@ -50,6 +50,7 @@
                                 <select name="type" data-am-selected="{btnSize: 'sm'}" style="display: none;">
                                     <option value="all" {% if request.GET.type == 'all' %} selected {% endif %}>所有条件</option>
                                     <option value="id" {% if request.GET.type == 'id' %} selected {% endif %}>ID</option>
+                                    <option value="username" {% if request.GET.type == 'username' %} selected {% endif %}>会员名</option>
                                     <option value="title" {% if request.GET.type == 'totalprice' %} selected {% endif %}>商品总价</option>
                                     <option value="price" {% if request.GET.type == 'totalnum' %} selected {% endif %}>商品数量</option>
                                     <option value="store" {% if request.GET.type == 'status' %} selected {% endif %}>订单状态</option>                            

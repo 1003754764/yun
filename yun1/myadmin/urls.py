@@ -1,8 +1,22 @@
 from django.conf.urls import url
-from . views import views,user,types,goods,order
+from . views import views,user,types,goods,order,authviews
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
+
+    # 后台首页
     url(r'^$',views.index,name="myadmin_index"),
+    # 后台登录
+    url(r'^login/$',views.login,name="myadmin_login"),
+
+    # 后台权限管理
+
+    # 后台用户添加
+    url(r'^auth/user/add/$',authviews.useradd,name="auth_user_add"),
+
+    # 后台用户列表
+    url(r'^auth/user/list/$',authviews.userlist,name="auth_user_list"),
+
+
 
     # 会员管理
     url(r'^user/add/$',user.add,name="myadmin_user_add"),

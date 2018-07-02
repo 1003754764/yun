@@ -21,7 +21,7 @@
     <div class="nav-cont">
         <ul>
             <li class="index">
-                <a href="#">首页</a></li>
+                <a href="{% url 'myhome_index' %}">首页</a></li>
             <li class="qc">
                 <a href="#">闪购</a></li>
             <li class="qc">
@@ -53,76 +53,78 @@
                         </div>
                 </div>
                 <hr>
-                <form>
-                <!--头像 -->
-                <div class="user-infoPic">
-                    <div class="filePic">
-                        <input type="file" class="inputPic" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*">
-                        <img class="am-circle am-img-thumbnail" src="{{ uinfo.pic|default:'/static/pics/users.png' }}" alt=""></div>
-                    <p class="am-form-help">头像</p>
-                    <div class="info-m">
-                        <div>
-                            <b>用户名：
-                                <i>{{ uinfo.username }}</i>
-                            </b>
-                        </div>
-                        <div class="u-level">
-                            <span class="rank r2">
-                                <s class="vip1"></s>
-                                <a class="classes" href="#">普通会员</a></span>
-                        </div>
-                        <div class="u-safety">
-                            <a href="safety.html">账户安全
-                                <span class="u-profile">
-                                    <i class="bc_ee0000" style="width: 60px;" width="0">60分</i></span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!--个人信息 -->
-                <div class="info-main">
-                    <form class="am-form am-form-horizontal">
-                        <div class="am-form-group">
-                            <label for="user-name2" class="am-form-label">用户名</label>
-                            <div class="am-form-content">
-                                <input type="text" id="user-name2" placeholder="name"></div>
-                        </div>
-                        <div class="am-form-group">
-                            <label for="user-name" class="am-form-label">年龄</label>
-                            <div class="am-form-content">
-                                <input type="text" id="user-name2" placeholder="age"></div>
-                        </div>
-                        <div class="am-form-group">
-                            <label class="am-form-label">性别</label>
-                            <div class="am-form-content sex">
-                                <label class="am-radio-inline">
-                                    <input type="radio" name="radio10" value="male" data-am-ucheck="" class="am-ucheck-radio">
-                                    <span class="am-ucheck-icons">
-                                        <i class="am-icon-unchecked"></i>
-                                        <i class="am-icon-checked"></i>
-                                    </span>男</label>
-                                <label class="am-radio-inline">
-                                    <input type="radio" name="radio10" value="female" data-am-ucheck="" class="am-ucheck-radio">
-                                    <span class="am-ucheck-icons">
-                                        <i class="am-icon-unchecked"></i>
-                                        <i class="am-icon-checked"></i>
-                                    </span>女</label>
+                <form action="{% url 'myhome_information' %}?uid={{ uinfo.id }}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <!--头像 -->
+                    <div class="user-infoPic">
+                        <div class="filePic">
+                            <input type="file" name="pic" class="inputPic" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*">
+                            <img class="am-circle am-img-thumbnail" src="{{ uinfo.pic|default:'/static/pics/users.png' }}" alt=""></div>
+                        <p class="am-form-help">头像</p>
+                        <div class="info-m">
+                            <div>
+                                <b>用户名：
+                                    <i>{{ uinfo.username }}</i>
+                                </b>
+                            </div>
+                            <div class="u-level">
+                                <span class="rank r2">
+                                    <s class="vip1"></s>
+                                    <a class="classes" href="#">普通会员</a></span>
+                            </div>
+                            <div class="u-safety">
+                                <a href="safety.html">账户安全
+                                    <span class="u-profile">
+                                        <i class="bc_ee0000" style="width: 60px;" width="0">60分</i></span>
+                                </a>
                             </div>
                         </div>
-                        <div class="am-form-group">
-                            <label for="user-phone" class="am-form-label">手机号</label>
-                            <div class="am-form-content">
-                                <input id="user-phone" placeholder="phone" type="tel"></div>
-                        </div>
-                        <div class="am-form-group">
-                            <label for="user-email" class="am-form-label">邮箱</label>
-                            <div class="am-form-content">
-                                <input id="user-email" placeholder="Email" type="email"></div>
-                        </div>
-                        <div class="info-btn">
-                            <div class="am-btn am-btn-danger">保存修改</div></div>
-                    </form>
-                </div>
+                    </div>
+                    <!--个人信息 -->
+                    <div class="info-main">
+                        <form class="am-form am-form-horizontal">
+                            <div class="am-form-group">
+                                <label for="user-name2" class="am-form-label">用户名</label>
+                                <div class="am-form-content">
+                                    <input type="text" name="username" readonly id="user-name2" value="{{ uinfo.username }}"></div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="user-name" class="am-form-label">年龄</label>
+                                <div class="am-form-content">
+                                    <input type="text" name="age" id="user-name2" value="{{ uinfo.age|default:0 }}" placeholder="age"></div>
+                            </div>
+                            <div class="am-form-group">
+                                <label class="am-form-label">性别</label>
+                                <div class="am-form-content sex">
+                                    <label class="am-radio-inline">
+                                        <input type="radio" name="sex" value="男" {% if uinfo.sex == '男' %} checked {% endif %} data-am-ucheck="" class="am-ucheck-radio">
+                                        <span class="am-ucheck-icons">
+                                            <i class="am-icon-unchecked"></i>
+                                            <i class="am-icon-checked"></i>
+                                        </span>男</label>
+                                    <label class="am-radio-inline">
+                                        <input type="radio" name="sex" value="女" {% if uinfo.sex == '女' %} checked {% endif %} data-am-ucheck="" class="am-ucheck-radio">
+                                        <span class="am-ucheck-icons">
+                                            <i class="am-icon-unchecked"></i>
+                                            <i class="am-icon-checked"></i>
+                                        </span>女</label>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="user-phone" class="am-form-label">手机号</label>
+                                <div class="am-form-content">
+                                    <input id="user-phone" name="phone" placeholder="phone" type="tel" value="{{ uinfo.phone }}"></div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-form-label">邮箱</label>
+                                <div class="am-form-content">
+                                    <input id="user-email" name="email" placeholder="Email" type="email" value="{{ uinfo.email }}"></div>
+                            </div>
+                            <div class="info-btn">
+                                <div class="am-btn am-btn-danger"><button style="color: #fff;background-color: #dd514c;border:0;width: 68px;height: 30px">保存修改</button></div>
+                            </div>
+                        </form>
+                    </div>
                 </form>
             </div>
         </div>
