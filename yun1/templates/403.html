@@ -1,0 +1,43 @@
+{% extends "myadmin/public/base.html" %}
+
+
+{% block title %}
+	<title>后台403</title>
+
+{% endblock %}
+
+{% block css %}
+<link href="/static/myadmin/css/c.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block js %}
+<script src="/static/myadmin/js/d.js"></script>
+{% endblock %}
+{% block header %}
+	<div class="container-fluid am-cf">
+	    <div class="row">
+	        <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+	            <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 后台403 </div>
+	            <!-- <p class="page-header-description">Amaze UI 含近 20 个 CSS 组件、20 余 JS 组件，更有多个包含不同主题的 Web 组件。</p> -->
+	        </div>
+	        <div class="am-u-lg-3 tpl-index-settings-button">
+	            <button type="button" class="page-header-button"><span class="am-icon-paint-brush"></span> 设置</button>
+	        </div>
+	    </div>
+
+	</div>
+{% endblock %}
+
+
+{% block con %}
+<div class="row-content am-cf">
+    <div class="widget am-cf">
+        <div class="widget-body">
+            <div class="tpl-page-state">
+                <div class="tpl-page-state-title am-text-center tpl-error-title">403</div>
+                <div class="tpl-page-state-content tpl-error-content">
+                    <p>对不起,您没有权限进行此项操作,请联系超级管理员。</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

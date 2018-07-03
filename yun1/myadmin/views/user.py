@@ -6,8 +6,9 @@ from django.contrib.auth.hashers import make_password
 import time,random,os
 from django.core.paginator import Paginator
 from django.db.models import Q
-
+from django.contrib.auth.decorators import permission_required
 # 会员添加
+@permission_required('myadmin.insert_users',raise_exception = True)
 def add(request):
 	if request.method == 'GET':
 
@@ -53,6 +54,7 @@ def add(request):
 
 
 # 会员列表
+@permission_required('myadmin.show_users',raise_exception = True)
 def list(request):
 
 
@@ -119,7 +121,7 @@ def list(request):
 
 
 # 会员删除
-
+@permission_required('myadmin.del_users',raise_exception = True)
 def delete(request):
 
 	# 获取点击删除的会员的id
@@ -157,7 +159,7 @@ def delete(request):
 
 
 # 会员修改
-
+@permission_required('myadmin.edit_users',raise_exception = True)
 def update(request):
 	# 获取点击删除的会员的id
 

@@ -55,7 +55,7 @@
                         {% endif %}
                         <a href="#">编辑</a>
                         <span class="new-addr-bar">|</span>
-                        <a href="javascript:void(0);" onclick="delClick(this);">删除</a></div>
+                        <a href="" class="addressdel" addressid="{{ v.id }}">删除</a></div>
                 </li>
             {% endfor %}
 
@@ -90,6 +90,17 @@
                     // 发生ajax修改状态
                     $.get('{% url "myhome_addressedit" %}',{aid:aid},function(date){
                         if(date == 0){
+                            location.href = location.href
+                        }
+                    })
+                })
+                $('.addressdel').click(function(){
+                    aid = $(this).attr('addressid')
+                    // alert(aid)
+                    // 发生ajax修改状态
+                    $.get('{% url "myhome_addressdel" %}',{aid:aid},function(date){
+                        if(date == 0){
+                            alert("删除地址成功")
                             location.href = location.href
                         }
                     })

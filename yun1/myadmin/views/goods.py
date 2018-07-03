@@ -7,6 +7,7 @@ from django.db.models import Q
 from .user import uploads
 
 import time,random,os
+from django.contrib.auth.decorators import permission_required
 
 # 获取所有的分类信息
 def gettypes():
@@ -26,6 +27,8 @@ def gettypes():
 
 	return tlist
 
+# 商品添加
+@permission_required('myadmin.insert_goods',raise_exception = True)
 def add(request):
 
 	if request.method=='GET':
@@ -94,7 +97,8 @@ def add(request):
 			return HttpResponse('<script>alert("添加失败");location.href="'+reverse('myadmin_goods_add')+'"</script>')
 
 
-
+# 商品列表
+@permission_required('myadmin.show_goods',raise_exception = True)
 def list(request):
 	# 获取搜索条件
 	types = request.GET.get('type',None)
@@ -162,6 +166,8 @@ def list(request):
 
 	return render(request,'myadmin/goods/list.html',obj)
 
+# 商品删除
+@permission_required('myadmin.del_goods',raise_exception = True)
 def delete(request):
 
 	gid = request.GET.get('gid',None)
@@ -183,7 +189,8 @@ def delete(request):
 
 	return JsonResponse(date)
 
-
+# 商品修改
+@permission_required('myadmin.edit_goods',raise_exception = True)
 def update(request):
 
 	# 获取商品ID

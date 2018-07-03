@@ -4,7 +4,10 @@ from django.http import HttpResponse
 from ..models import Orders,OrderInfo
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib.auth.decorators import permission_required
 
+# 订单列表
+@permission_required('myadmin.show_order',raise_exception = True)
 def list(request):
 	# 获取搜索条件
 	types = request.GET.get('type',None)
@@ -65,7 +68,7 @@ def list(request):
 
 
 
-
+# 订单详情
 def info(request):
 	
 	oid = request.GET.get('oid')
@@ -79,7 +82,8 @@ def info(request):
 
 
 
-
+# 订单状态
+@permission_required('myadmin.edit_order',raise_exception = True)
 def status(request):
 	
 	oid = request.GET.get('oid')

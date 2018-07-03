@@ -6,8 +6,13 @@ urlpatterns = [
     # 后台首页
     url(r'^$',views.index,name="myadmin_index"),
     # 后台登录
-    url(r'^login/$',views.login,name="myadmin_login"),
+    url(r'^mylogin/$',authviews.mylogin,name="myadmin_login"),
+    # 退出登录
 
+    url(r'^mylogout/$',authviews.mylogout,name="myadmin_mylogout"),
+
+    # 验证码
+    url(r'^vcode/$',views.vcode,name="vcode"),
     # 后台权限管理
 
     # 后台用户添加
@@ -15,6 +20,19 @@ urlpatterns = [
 
     # 后台用户列表
     url(r'^auth/user/list/$',authviews.userlist,name="auth_user_list"),
+
+    # 后台用户删除
+    url(r'^auth/user/del/(?P<uid>[0-9]+)$',authviews.userdel,name="auth_user_del"),
+
+    # 后台组添加
+    url(r'^auth/group/add/$',authviews.groupadd,name="auth_group_add"),
+
+    # 后台组列表
+    url(r'^auth/group/list/$',authviews.grouplist,name="auth_group_list"),
+
+    # 后台组修改
+    url(r'^auth/group/edit/(?P<gid>[0-9]+)$',authviews.groupedit,name="auth_group_edit"),
+
 
 
 

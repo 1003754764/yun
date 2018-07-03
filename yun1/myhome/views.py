@@ -290,8 +290,9 @@ def addcart(request):
 # 购物车列表
 def cartlist(request):
 
-	# ob = request.session.get('cart',None)	
-	ob = request.session['cart']
+	ob = request.session.get('cart',None)
+
+	# ob = request.session['cart']
 
 	if ob:
 		date = ob.values()
@@ -398,6 +399,22 @@ def addressadd(request):
 	res = Address.objects.create(**date)
 
 	return HttpResponse(0)
+
+# 收货地址删除
+def addressdel(request):
+	
+	aid = request.GET['aid']
+
+
+	ob = Address.objects.get(id=aid)
+
+	# print(date.name)
+
+	ob.delete()
+
+	return HttpResponse(0)
+
+
 
 # 生成订单
 def ordercreate(request):
@@ -585,4 +602,44 @@ def myorders(request):
 	return render(request,'myhome/word/myorders.html',context)
 
 
+# 退款售后
 
+def change(request):
+	
+	return render(request,'myhome/word/change.html')
+
+# 优惠券
+def coupon(request):
+	
+	return render(request,'myhome/word/coupon.html')
+
+# 红包
+def bonus(request):
+	
+	return render(request,'myhome/word/bonus.html')
+
+# 账单明细
+def bill(request):
+	
+	return render(request,'myhome/word/bill.html')
+
+# 收藏
+def collection(request):
+	
+	return render(request,'myhome/word/collection.html')
+
+
+# 足迹
+def foot(request):
+	
+	return render(request,'myhome/word/foot.html')
+
+# 评价
+def comment(request):
+	
+	return render(request,'myhome/word/comment.html')
+
+# 消息
+def news(request):
+	
+	return render(request,'myhome/word/news.html')

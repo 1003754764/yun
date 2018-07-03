@@ -16,6 +16,16 @@ class LoginMiddleware:
 
 		u = request.path
 
+		# 定义后台验证
+
+		if re.match('/myadmin/',u) and u not in ['/myadmin/mylogin/','/myadmin/vcode/']:
+
+			# 判断是否登录
+
+			if not request.session.get('_auth_user_id',None):
+
+				return HttpResponse('<script>alert("请先登录");location.href="/myadmin/mylogin/"</script>')
+
 		# 定义前台验证
 
 		# 定义前台的需要登录的url路由
@@ -36,16 +46,6 @@ class LoginMiddleware:
 
 		return response
 
-
-		# 定义后台验证
-
-		# if re.match('/myadmin/',u) and u not in ['/myadmin/login/']:
-
-		# 	# 判断是否登录
-
-		# 	if not request.session.get('AdminLogin',None):
-
-		# 		return HttpResponse('<script>alert("请先登录");location.href="/myadmin/login/?next='+u+'"</script>')
 
 
 

@@ -65,6 +65,9 @@ urlpatterns = [
     # 收货地址增加
     url(r'^addressadd/$',views.addressadd,name="myhome_addressadd"),
 
+    # 收货地址删除
+    url(r'^addressdel/$',views.addressdel,name="myhome_addressdel"),
+
     # 生成订单
     url(r'^ordercreate/$',views.ordercreate,name="myhome_ordercreate"),
 
@@ -92,6 +95,40 @@ urlpatterns = [
     # 我的订单
     url(r'^myorders/$',views.myorders,name="myhome_myorders"),
 
+    # 退款售后
+
+    url(r'^change/$',views.change,name="myhome_change"),
+
+    # 优惠券
+
+    url(r'^coupon/$',views.coupon,name="myhome_coupon"),
+
+    # 红包
+
+    url(r'^bonus/$',views.bonus,name="myhome_bonus"),
+
+    # 账单明细
+
+    url(r'^bill/$',views.bill,name="myhome_bill"),
+
+    # 收藏
+
+    url(r'^collection/$',views.collection,name="myhome_collection"),
+
+    # 足迹
+
+    url(r'^foot/$',views.foot,name="myhome_foot"),
 
 
+    # 评价
+
+    url(r'^comment/$',views.comment,name="myhome_comment"),
+
+
+    # 消息
+
+    url(r'^news/$',views.news,name="myhome_news"),
+
+
+    
 ]

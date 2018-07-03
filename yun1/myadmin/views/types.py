@@ -5,6 +5,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from .user import uploads
 # Create your views here.
+from django.contrib.auth.decorators import permission_required
 
 # 获取所有的分类信息
 def gettypes():
@@ -25,6 +26,7 @@ def gettypes():
 	return tlist
 
 # 商品分类添加
+@permission_required('myadmin.insert_types',raise_exception = True)
 def add(request):
 
 	if request.method == 'GET':
@@ -73,6 +75,7 @@ def add(request):
 		
 # 商品分类列表
 
+@permission_required('myadmin.show_types',raise_exception = True)
 def list(request):
 
 	# 获取搜索条件
@@ -146,6 +149,7 @@ def list(request):
 	return render(request,'myadmin/types/list.html',obj)
 
 # 商品分类删除
+@permission_required('myadmin.del_types',raise_exception = True)
 def delete(request):
 
 	uid = request.GET.get('uid',None)
@@ -168,6 +172,7 @@ def delete(request):
 	return JsonResponse(date)
 
 # 商品分类修改
+@permission_required('myadmin.edit_types',raise_exception = True)
 def update(request):
 	# 获取点击删除的商品分类的id
 
