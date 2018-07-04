@@ -21,6 +21,9 @@ urlpatterns = [
     # 后台用户列表
     url(r'^auth/user/list/$',authviews.userlist,name="auth_user_list"),
 
+    # 后台用户编辑
+    # url(r'^auth/user/edit/(?P<uid>[0-9]+)$',authviews.useredit,name="auth_user_edit"),
+
     # 后台用户删除
     url(r'^auth/user/del/(?P<uid>[0-9]+)$',authviews.userdel,name="auth_user_del"),
 

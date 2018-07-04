@@ -56,6 +56,37 @@ def userlist(request):
 	
 	return render(request,'auth/user/list.html',obj)
 
+# # 用户编辑
+# def useredit(request,uid):
+# 	# 获取当前用户的信息
+
+# 	ob = User.objects.get(id=uid)
+
+# 	if request.method == 'GET':
+
+# 		perms = Group.objects.exclude(group=ginfo).exclude(name__istartswith='Can')
+		
+# 		obj = {'uinfo':ob}
+
+# 		return render(request,'auth/user/edit.html',obj)
+
+	# elif request.method == 'POST':
+
+	# 	ginfo.name = request.POST['name']
+
+	# 	perms = request.POST.getlist('prms',None)
+
+	# 	ginfo.permissions.clear()
+
+	# 	if perms:
+
+	# 		ginfo.permissions.set(perms)
+
+	# 	ginfo.save()
+
+
+		# return HttpResponse('<script>alert("修改成功");location.href="/myadmin/auth/user/list"</script>')
+
 # 用户删除
 def userdel(request,uid):
 

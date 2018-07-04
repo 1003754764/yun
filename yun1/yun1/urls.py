@@ -16,10 +16,18 @@ Including another URLconf
 from django.conf.urls import url,include
 # from django.contrib import admin
 
+from django.views import static
+from django.conf import settings
+
+
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
     url(r'^ueditor/', include('ueditor.urls')),
     url(r'^myadmin/', include('myadmin.urls')),
     url(r'^', include('myhome.urls')),
+
+     # 增加以下一行，以识别静态资源
+    url(r'^static/(?P<path>.*)$', static.serve,
+        {'document_root': settings.STATIC_ROOT}, name='static')
 
 ]
